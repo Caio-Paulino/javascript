@@ -1,23 +1,59 @@
+let num = document.getElementById('fnum')
+let lista = document.getElementById('flista')
+let res = document.querySelector('div.res')
+let valores = []
 
-
-var sel = document.getElementById('selcont')
-let item = []
-
-function adicionar() {
-    var num = document.getElementById('num')
-    var n = Number(num.value)
-
-    if(n<1 || n>100) {
-        window.alert('Digite um número válido!')
+function isNumero(n) {
+    if(Number(n) >= 1 && Number(n) <= 100) {
+        return true
     } else {
-        item = document.createElement('option')
-        item.text = `Valor ${n} adicionado`
-        window.alert(`Valor adicionado!`)
-        sel.appendChild(item)
+        return false
+    }
 }
 
+function inLista(n, l) {
+    if(l.indexOf(Number(n)) != -1) {
+        return true
+    } else {
+        return false
+    }
+}
+
+function adicionar() {
+    if(isNumero(num.value) && !inLista(num.value, valores)) {
+        valores.push(Number(num.value))
+        let item = document.createElement('option')
+        item.text = `Valor ${num.value} adicionado`
+        lista.appendChild(item)
+        res.innerHTML = ''
+    } else {
+        window.alert('Valor inválido ou já encontrado na lista.')
+    }
+    num.value = ''
+    num.focus()
 }
 
 function finalizar() {
-    
+    if(valores.length == 0) {
+        window.alert('Digite algum valor primeiro!')
+    } else {
+        let tot = valores.length
+        let maior = Math.max(...valores)
+        let menor = Math.min(...valores)
+        let soma = 0
+        let media = 0
+        for(let pos in valores) {
+            soma += valores[pos]
+        }
+        media = soma / tot
+
+        res.innerHTML = ''
+        res.innerHTML = `<p>Ao todo, temos ${tot} números cadastrados.<p>`
+        res.innerHTML += `<p>O maior valor é ${maior}.</p>`
+        res.innerHTML += `<p>O menor valor é ${menor}.</p>`
+        res.innerHTML += `<p>A soma dos valores é ${soma}.</p>`
+        res.innerHTML += `<p>A média dos valores é ${media}.</p>`   
+    }
 }
+
+
